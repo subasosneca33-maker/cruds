@@ -7,22 +7,24 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: #f8f9fa;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
             padding: 20px 0;
         }
-        .container {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            padding: 30px;
-            margin-top: 20px;
+        .details-wrapper {
             max-width: 600px;
+            margin: 30px auto 0;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            padding: 40px;
         }
         .page-title {
-            color: #333;
+            color: #2c3e50;
             margin-bottom: 30px;
             border-bottom: 3px solid #17a2b8;
-            padding-bottom: 10px;
+            padding-bottom: 15px;
+            font-weight: 600;
         }
         .product-details {
             margin-bottom: 30px;
@@ -37,41 +39,41 @@
             border-bottom: none;
         }
         .detail-label {
-            font-weight: bold;
-            color: #495057;
+            font-weight: 600;
+            color: #2c3e50;
             min-width: 150px;
         }
         .detail-value {
             color: #212529;
             font-size: 1.1rem;
         }
-        .badge-quantity {
-            font-size: 1rem;
-            padding: 8px 15px;
-        }
         .btn-group-action {
             display: flex;
             gap: 10px;
             justify-content: space-between;
             margin-top: 30px;
+            flex-wrap: wrap;
         }
-        .status-badge {
-            display: inline-block;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 0.9rem;
+        .btn-group-action .btn {
+            padding: 10px 20px;
+            font-weight: 600;
         }
         .info-section {
             background-color: #e8f4f8;
             padding: 15px;
-            border-radius: 5px;
+            border-radius: 6px;
             margin-bottom: 20px;
             border-left: 4px solid #17a2b8;
+        }
+        .info-section p {
+            margin: 0;
+            font-size: 0.95rem;
+            color: #0c5460;
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="details-wrapper">
         <h1 class="page-title">👁️ Product Details</h1>
 
         <div class="info-section">
@@ -129,6 +131,33 @@
             <a href="{{ route('products.edit', $product) }}" class="btn btn-primary">
                 ✏️ Update Product
             </a>
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                🗑️ Delete
+            </button>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="deleteModalLabel">Delete Product</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete <strong>{{ $product->product_name }}</strong>?</p>
+                    <p class="text-muted">This action cannot be undone.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <form action="{{ route('products.destroy', $product) }}" method="POST" style="display: inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 
